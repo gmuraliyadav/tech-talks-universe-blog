@@ -1,10 +1,45 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Create a custom sphere instead of using the problematic drei Sphere component
+// Create custom orbit controls instead of using drei
+const CustomOrbitControls = () => {
+  const { camera, gl } = useThree();
+  const controlsRef = useRef();
+  
+  useEffect(() => {
+    // Import OrbitControls directly from Three.js
+    const OrbitControls = require('three/examples/jsm/controls/OrbitControls').OrbitControls;
+    const controls = new OrbitControls(camera, gl.domElement);
+    
+    controls.enableZoom = false;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 1;
+    
+    controlsRef.current = controls;
+    
+    return () => {
+      controls.dispose();
+    };
+  }, [camera, gl]);
+  
+  useFrame(() => {
+    if (controlsRef.current) {
+      controlsRef.current.update();
+    }
+  });
+  
+  return null;
+};
+
+// Get access to the three.js context
+const useThree = () => {
+  const context = React.useContext(require('@react-three/fiber').context);
+  return context.getState();
+};
+
+// Create a custom animated sphere
 const AnimatedSphere = () => {
   const sphereRef = useRef<THREE.Mesh>(null);
   
@@ -35,7 +70,7 @@ const TechSphere = () => {
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 10, 10]} intensity={1} />
         <AnimatedSphere />
-        <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={1} />
+        <CustomOrbitControls />
       </Canvas>
     </div>
   );
