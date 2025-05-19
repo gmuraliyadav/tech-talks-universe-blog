@@ -1,16 +1,15 @@
 
 import React, { useRef, useEffect } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
-// Create custom orbit controls instead of using drei
+// Create custom orbit controls using proper imports
 const CustomOrbitControls = () => {
   const { camera, gl } = useThree();
-  const controlsRef = useRef();
+  const controlsRef = useRef<OrbitControls | null>(null);
   
   useEffect(() => {
-    // Import OrbitControls directly from Three.js
-    const OrbitControls = require('three/examples/jsm/controls/OrbitControls').OrbitControls;
     const controls = new OrbitControls(camera, gl.domElement);
     
     controls.enableZoom = false;
@@ -31,12 +30,6 @@ const CustomOrbitControls = () => {
   });
   
   return null;
-};
-
-// Get access to the three.js context
-const useThree = () => {
-  const context = React.useContext(require('@react-three/fiber').context);
-  return context.getState();
 };
 
 // Create a custom animated sphere
