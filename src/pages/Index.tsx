@@ -5,6 +5,7 @@ import TechSphere from '@/components/TechSphere';
 import TechCard from '@/components/TechCard';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import { Instagram, Linkedin, Twitter, Youtube } from 'lucide-react';
 
 const Index = () => {
   const { toast } = useToast();
