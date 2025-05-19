@@ -1,9 +1,10 @@
 
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Sphere } from '@react-three/drei';
+import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
+// Create a custom sphere instead of using the problematic drei Sphere component
 const AnimatedSphere = () => {
   const sphereRef = useRef<THREE.Mesh>(null);
   
@@ -15,14 +16,15 @@ const AnimatedSphere = () => {
   });
 
   return (
-    <Sphere ref={sphereRef} args={[1, 48, 48]} scale={1.5}>
+    <mesh ref={sphereRef} scale={1.5}>
+      <sphereGeometry args={[1, 48, 48]} />
       <meshStandardMaterial 
         color="#6366F1"
         roughness={0.4}
         metalness={0.7}
         wireframe
       />
-    </Sphere>
+    </mesh>
   );
 };
 
